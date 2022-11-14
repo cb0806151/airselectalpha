@@ -15,6 +15,7 @@ export class CursorComponent implements AfterViewInit {
   mousePressed: boolean = false
   rightHanded: boolean | undefined
   hoveredElem: any
+  clickedElem: any
   handsfree = new Handsfree({
     hands: {
       enabled: true,
@@ -46,6 +47,7 @@ export class CursorComponent implements AfterViewInit {
   handsfreePinchListener (category: string, mousePressed: boolean) {
     this.handsfree.on(category, () => {
       this.mousePressed = mousePressed
+      if (mousePressed) this.checkIfClicking()
       if (this.cursor != null) this.cursor.nativeElement.style.background = mousePressed ? 'lime' : 'red'
     })
   }
@@ -63,10 +65,16 @@ export class CursorComponent implements AfterViewInit {
   checkElementsNearCursor () {
     let elems = document.elementsFromPoint(this.cursorX, this.cursorY)
     this.hoveredElem = elems.find(e => e.classList.contains("hoverable"))
-    console.log(elems, this.hoveredElem)
-    // clickedElem = elems.find(e => e.classList.contains("clickable"))
+    this.clickedElem = elems.find(e => e.classList.contains("clickable"))
     // scrolledElem = elems.find(e => e.classList.contains("scrollable"))
     // drewElem = elems.find(e => e.classList.contains("drawable"))
+}
+
+checkIfClicking () {
+  if (this.clickedElem !== undefined) {
+    console.log('clicked')
+    this.clickedElem.click();
+  } 
 }
 
   checkIfHovered () {
@@ -74,8 +82,7 @@ export class CursorComponent implements AfterViewInit {
     allClickableElements.forEach((elem: any) => {
         elem.classList.remove('hovered')
     });
-    console.log(this.hoveredElem)
-    this.hoveredElem.classList.add('hovered')
+    if (this.hoveredElem !== undefined) this.hoveredElem.classList.add('hovered')
 
 }
 
