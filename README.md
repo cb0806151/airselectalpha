@@ -19,10 +19,10 @@ A Recreation of the air select project with better graphics
 - implement "pinch click"
 - create hoverable buttons
 - create clickable buttons
-
-Backlog
 - center cursor 'trackpad'
 - eliminate buggyness around edges of trackpad
+
+Backlog
 - find types for handdata
 
 </p>

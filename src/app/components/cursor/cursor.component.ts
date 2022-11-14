@@ -41,7 +41,7 @@ export class CursorComponent implements AfterViewInit {
           this.checkElementsNearCursor()
           this.checkIfHovered()
       }
-      }, 25)
+      }, 5)
   }
 
   handsfreePinchListener (category: string, mousePressed: boolean) {
@@ -87,8 +87,9 @@ checkIfClicking () {
 }
 
   moveCursor (landmarks: any) {
-    this.cursorX = (window.innerWidth - (landmarks[9].x * 1300))
-    this.cursorY = (landmarks[9].y * 800)
+    if (landmarks[9].x > 0.2 && landmarks[9].x < 0.8) this.cursorX = (window.innerWidth - (landmarks[9].x * window.innerWidth))
+    if (landmarks[9].y > 0.2 && landmarks[9].y < 0.7) this.cursorY = (landmarks[9].y * window.innerHeight)
+    console.log(landmarks[9].x, landmarks[9].y)
     if (this.cursor != null) {
       this.cursor.nativeElement.style.left = `${this.cursorX}px`
       this.cursor.nativeElement.style.top = `${this.cursorY}px`
