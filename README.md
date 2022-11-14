@@ -17,10 +17,11 @@ A Recreation of the air select project with better graphics
 
 11/14/22
 - implement "pinch click"
+- create hoverable buttons
 
 Backlog
 - center cursor 'trackpad'
-- create a pinchable button
+- create clickable buttons
 - find types for handdata
 
 </p>

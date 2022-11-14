@@ -1,0 +1,20 @@
+div {
+    width: 400px;
+    height: 100px;
+    color: white;
+    background: #37578c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    &:hover {
+        background: #2664c9;
+    }
+}
+
+.hovered {
+    background: #2664c9;
+}

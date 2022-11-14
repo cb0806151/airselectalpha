@@ -1,4 +1,5 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 // @ts-ignore
 import Handsfree from "handsfree";
 
@@ -13,6 +14,7 @@ export class CursorComponent implements AfterViewInit {
   cursorY: number = 0
   mousePressed: boolean = false
   rightHanded: boolean | undefined
+  hoveredElem: any
   handsfree = new Handsfree({
     hands: {
       enabled: true,
@@ -22,7 +24,7 @@ export class CursorComponent implements AfterViewInit {
     }
   })
 
-  constructor() { }
+  constructor (@Inject(DOCUMENT) private document: Document) {}
 
   ngAfterViewInit(): void {
     this.handsfree.start(() => {
@@ -32,26 +34,19 @@ export class CursorComponent implements AfterViewInit {
     this.onMouseReleased()
     setInterval(() => {
       if (this.handsfree.data.hands?.multiHandLandmarks[0] !== undefined) {
-              let landmarks = this.handsfree.data.hands.multiHandLandmarks[0]
-              this.moveCursor(landmarks)
-              if (this.rightHanded === undefined) {
-                this.checkDominantHand(this.handsfree.data.hands.multiHandedness[0])
-              } 
-          }
-      }, 5)
-  }
-
-  checkDominantHand (handData: any) {
-    if (handData.label === "Right") {
-        this.rightHanded = false
-    } else {
-        this.rightHanded = true
-    }
+          let landmarks = this.handsfree.data.hands.multiHandLandmarks[0]
+          this.rightHanded = this.handsfree.data.hands.multiHandedness[0].label === "Right"
+          this.moveCursor(landmarks)
+          this.checkElementsNearCursor()
+          this.checkIfHovered()
+      }
+      }, 25)
   }
 
   handsfreePinchListener (category: string, mousePressed: boolean) {
     this.handsfree.on(category, () => {
       this.mousePressed = mousePressed
+      if (this.cursor != null) this.cursor.nativeElement.style.background = mousePressed ? 'lime' : 'red'
     })
   }
 
@@ -64,6 +59,25 @@ export class CursorComponent implements AfterViewInit {
     this.handsfreePinchListener(`finger-pinched-released-1-0`, false)
     this.handsfreePinchListener(`finger-pinched-released-0-0`, false)
   }
+
+  checkElementsNearCursor () {
+    let elems = document.elementsFromPoint(this.cursorX, this.cursorY)
+    this.hoveredElem = elems.find(e => e.classList.contains("hoverable"))
+    console.log(elems, this.hoveredElem)
+    // clickedElem = elems.find(e => e.classList.contains("clickable"))
+    // scrolledElem = elems.find(e => e.classList.contains("scrollable"))
+    // drewElem = elems.find(e => e.classList.contains("drawable"))
+}
+
+  checkIfHovered () {
+    var allClickableElements = this.document.querySelectorAll('.hoverable')
+    allClickableElements.forEach((elem: any) => {
+        elem.classList.remove('hovered')
+    });
+    console.log(this.hoveredElem)
+    this.hoveredElem.classList.add('hovered')
+
+}
 
   moveCursor (landmarks: any) {
     this.cursorX = (window.innerWidth - (landmarks[9].x * 1300))
