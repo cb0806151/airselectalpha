@@ -15,9 +15,13 @@ A Recreation of the air select project with better graphics
 - integrate handsfree js
 - get cursor working
 
+11/14/22
+- implement "pinch click"
+
 Backlog
 - center cursor 'trackpad'
-- implement "pinch click"
+- create a pinchable button
+- find types for handdata
 
 </p>
 </details>
