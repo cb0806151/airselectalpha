@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -6,6 +6,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnInit {
+  @Input() text: string = "";
   @HostListener('click', ['$event']) onClick(event: unknown) {
     console.log(event)
   }

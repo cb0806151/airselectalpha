@@ -21,9 +21,13 @@ A Recreation of the air select project with better graphics
 - create clickable buttons
 - center cursor 'trackpad'
 - eliminate buggyness around edges of trackpad
+- reduce jitter
 
 Backlog
 - find types for handdata
+- design settings page
+- create settings page
+- reduce misclicks
 
 </p>
 </details>

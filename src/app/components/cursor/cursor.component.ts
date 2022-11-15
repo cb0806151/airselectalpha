@@ -10,6 +10,8 @@ import Handsfree from "handsfree";
 })
 export class CursorComponent implements AfterViewInit {
   @ViewChild('cursor', {static: false}) cursor: ElementRef | undefined
+  variance = 10
+  jitterReduction = true
   cursorX: number = 0
   cursorY: number = 0
   mousePressed: boolean = false
@@ -87,8 +89,20 @@ checkIfClicking () {
 }
 
   moveCursor (landmarks: any) {
-    if (landmarks[9].x > 0.2 && landmarks[9].x < 0.8) this.cursorX = (window.innerWidth - (landmarks[9].x * window.innerWidth))
-    if (landmarks[9].y > 0.2 && landmarks[9].y < 0.7) this.cursorY = (landmarks[9].y * window.innerHeight)
+    if (this.jitterReduction) {
+      if (landmarks[9].x > 0.2 && landmarks[9].x < 0.8) {
+        const newCursorX = (window.innerWidth - (landmarks[9].x * window.innerWidth))
+        if ((newCursorX > this.cursorX && newCursorX - this.cursorX > this.variance) || (newCursorX < this.cursorX && this.cursorX - newCursorX > this.variance)) this.cursorX = newCursorX
+      }
+      if (landmarks[9].y > 0.2 && landmarks[9].y < 0.7) {
+        const newCursorY = (landmarks[9].y * window.innerHeight)
+        if ((newCursorY > this.cursorY && newCursorY - this.cursorY > this.variance) || (newCursorY < this.cursorY && this.cursorY - newCursorY > this.variance)) this.cursorY = newCursorY
+      }
+    } else {
+      if (landmarks[9].x > 0.2 && landmarks[9].x < 0.8) this.cursorX = (window.innerWidth - (landmarks[9].x * window.innerWidth))
+      if (landmarks[9].y > 0.2 && landmarks[9].y < 0.7) this.cursorY = (landmarks[9].y * window.innerHeight)
+    }
+    
     console.log(landmarks[9].x, landmarks[9].y)
     if (this.cursor != null) {
       this.cursor.nativeElement.style.left = `${this.cursorX}px`
