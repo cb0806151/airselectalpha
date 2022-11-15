@@ -21,12 +21,18 @@ A Recreation of the air select project with better graphics
 - create clickable buttons
 - center cursor 'trackpad'
 - eliminate buggyness around edges of trackpad
+
+11/15/22
 - reduce jitter
+- create shop page
+- create settings page
+- create home page
+- convert mousepad to component
 
 Backlog
 - find types for handdata
 - design settings page
-- create settings page
+- design shop page
 - reduce misclicks
 
 </p>
